@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.provider.Settings
 import android.provider.Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS
 import android.text.TextUtils
+import android.widget.Button
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -22,9 +23,11 @@ import com.mua.roti.viewmodel.MainViewModel
 class MainActivity : AppCompatActivity() {
 
     private lateinit var notificationsRecyclerView : RecyclerView
+    private lateinit var scrollToTopButton : Button
     private lateinit var mBinding : ActivityMainBinding
     private lateinit var viewModel : MainViewModel
     private lateinit var notificationListAdapter : NotificationEntryListAdapter
+    private lateinit var layoutManager : LinearLayoutManager
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP_MR1)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,15 +54,23 @@ class MainActivity : AppCompatActivity() {
 
     private fun initView(){
         notificationsRecyclerView = mBinding.rvNotifications
+        scrollToTopButton = mBinding.btnScrollToTop
 
+        initScrollToTop()
         initRvData()
+    }
+
+    private fun initScrollToTop(){
+        scrollToTopButton.setOnClickListener {
+            layoutManager.scrollToPositionWithOffset(notificationListAdapter.itemCount,0)
+        }
     }
 
     private fun initRvData(){
         notificationListAdapter = NotificationEntryListAdapter()
         notificationsRecyclerView.adapter = notificationListAdapter
 
-        val layoutManager = LinearLayoutManager(this)
+        layoutManager = LinearLayoutManager(this)
         layoutManager.reverseLayout = true
         layoutManager.stackFromEnd = true
         notificationsRecyclerView.layoutManager = layoutManager
