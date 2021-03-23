@@ -18,7 +18,7 @@
         android:padding="20dp">
 
         <Button
-            visibility="{main.toTop}"
+            visibility="@{main.toTop}"
             android:id="@+id/btn_scroll_to_top"
             android:text="Scroll to top"
             android:layout_width="match_parent"

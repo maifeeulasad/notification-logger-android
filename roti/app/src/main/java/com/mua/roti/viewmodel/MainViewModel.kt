@@ -14,11 +14,10 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     val notificationEntries
             : LiveData<MutableList<NotificationEntry>>
             = notificationEntryRepository.notificationEntries
+
     val _toTop
             : MutableLiveData<Boolean>
             = MutableLiveData(false)
     val toTop
-            : LiveData<Boolean>
-            = _toTop
-
+            : LiveData<Boolean> get() = _toTop
 }

@@ -68,7 +68,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun initScrollToTop(){
         scrollToTopButton.setOnClickListener {
-            layoutManager.scrollToPositionWithOffset(notificationListAdapter.itemCount,0)
+            layoutManager.scrollToPositionWithOffset(viewModel.notificationEntries.value!!.size,0)
+            viewModel._toTop.value = false
         }
     }
 
@@ -83,6 +84,7 @@ class MainActivity : AppCompatActivity() {
 
         viewModel.notificationEntries.observe(mBinding.lifecycleOwner!!, Observer {
             notificationListAdapter.setNotificationEntryList(it)
+            viewModel._toTop.value = true
         })
     }
 
