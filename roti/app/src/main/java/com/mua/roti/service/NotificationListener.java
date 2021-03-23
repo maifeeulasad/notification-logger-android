@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.service.notification.NotificationListenerService;
 import android.service.notification.StatusBarNotification;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
@@ -19,7 +20,7 @@ import java.sql.Date;
 @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
 public class NotificationListener extends NotificationListenerService {
 
-    private NotificationEntryRepository notificationEntryRepository;
+    private final NotificationEntryRepository notificationEntryRepository;
 
 
     public NotificationListener(){
@@ -29,15 +30,11 @@ public class NotificationListener extends NotificationListenerService {
     @Override
     public void onListenerConnected() {
         super.onListenerConnected();
-
-        Log.d("d--mua", "service connected");
     }
 
     @Override
     public void onListenerDisconnected() {
         super.onListenerDisconnected();
-
-        Log.d("d--mua", "service disconnected");
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -52,11 +49,8 @@ public class NotificationListener extends NotificationListenerService {
         String key = "";
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT_WATCH) {
-            Log.d("d--mua", "key :  " + sbn.getKey());
             key = sbn.getKey();
         }
-        Log.d("d--mua", "title : " + title);
-        Log.d("d--mua", "text : " + text);
 
         NotificationEntry notificationEntry
                 = new NotificationEntryBuilder()
