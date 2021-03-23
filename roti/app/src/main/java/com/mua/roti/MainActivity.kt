@@ -1,5 +1,7 @@
 package com.mua.roti
 
+
+import androidx.activity.viewModels
 import android.content.ComponentName
 import android.content.Intent
 import android.os.Build
@@ -12,12 +14,12 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.mua.roti.adapter.NotificationEntryListAdapter
 import com.mua.roti.databinding.ActivityMainBinding
 import com.mua.roti.viewmodel.MainViewModel
+import com.mua.roti.viewmodel.viewModelFactory
 
 
 class MainActivity : AppCompatActivity() {
@@ -25,9 +27,13 @@ class MainActivity : AppCompatActivity() {
     private lateinit var notificationsRecyclerView : RecyclerView
     private lateinit var scrollToTopButton : Button
     private lateinit var mBinding : ActivityMainBinding
-    private lateinit var viewModel : MainViewModel
+    private val viewModel: MainViewModel by viewModels {
+        viewModelFactory { MainViewModel(this.application) }
+    }
     private lateinit var notificationListAdapter : NotificationEntryListAdapter
     private lateinit var layoutManager : LinearLayoutManager
+
+
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP_MR1)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,7 +46,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun initViewModelAndBinding(){
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+        viewModel
         mBinding.main = viewModel
         mBinding.lifecycleOwner = this
     }
