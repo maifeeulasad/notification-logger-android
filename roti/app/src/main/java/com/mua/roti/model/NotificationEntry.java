@@ -27,7 +27,7 @@ public class NotificationEntry {
     private String text;
 
     @ColumnInfo(name = "timeStamp")
-    private Date timeStamp;
+    private Date timeStamp = new Date(new java.util.Date().getTime());
 
     public Long getNotificationEntryId() {
         return notificationEntryId;

@@ -10,9 +10,21 @@ import android.util.Log;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 
+import com.mua.roti.model.NotificationEntry;
+import com.mua.roti.model.builder.NotificationEntryBuilder;
+import com.mua.roti.repository.NotificationEntryRepository;
+
+import java.sql.Date;
+
 @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
 public class NotificationListener extends NotificationListenerService {
 
+    private NotificationEntryRepository notificationEntryRepository;
+
+
+    public NotificationListener(){
+        notificationEntryRepository = new NotificationEntryRepository(getApplication());
+    }
 
     @Override
     public void onListenerConnected() {
@@ -37,11 +49,23 @@ public class NotificationListener extends NotificationListenerService {
         String title = bundle.getString(NotificationCompat.EXTRA_TITLE);
         String text = bundle.getString(NotificationCompat.EXTRA_TEXT);
 
+        String key = "";
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT_WATCH) {
             Log.d("d--mua", "key :  " + sbn.getKey());
+            key = sbn.getKey();
         }
         Log.d("d--mua", "title : " + title);
         Log.d("d--mua", "text : " + text);
+
+        NotificationEntry notificationEntry
+                = new NotificationEntryBuilder()
+                .setKey(key)
+                .setTitle(title)
+                .setText(text)
+                .build();
+
+        notificationEntryRepository.insert(notificationEntry);
     }
 
     @Override
