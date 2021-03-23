@@ -6,7 +6,7 @@ import android.os.AsyncTask;
 import androidx.lifecycle.LiveData;
 
 import com.mua.roti.dao.NotificationEntryDao;
-import com.mua.roti.database.ApplicationDatabase;
+import com.mua.roti.data.database.ApplicationDatabase;
 import com.mua.roti.model.NotificationEntry;
 
 import java.util.List;

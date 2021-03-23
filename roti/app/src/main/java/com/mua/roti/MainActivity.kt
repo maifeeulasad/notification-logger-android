@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.mua.roti.adapter.NotificationEntryListAdapter
 import com.mua.roti.databinding.ActivityMainBinding
+import com.mua.roti.service.NotificationListener
 import com.mua.roti.viewmodel.MainViewModel
 import com.mua.roti.viewmodel.viewModelFactory
 
@@ -42,6 +43,14 @@ class MainActivity : AppCompatActivity() {
         initViewModelAndBinding()
         initPermissions()
         initView()
+        startNotificationListener()
+    }
+
+    private fun startNotificationListener(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2
+            && isNotificationServiceEnabled()) {
+            startService(Intent(this,NotificationListener::class.java))
+        }
     }
 
     private fun initViewModelAndBinding(){
