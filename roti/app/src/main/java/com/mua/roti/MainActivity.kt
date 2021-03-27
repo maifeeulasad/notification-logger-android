@@ -43,10 +43,10 @@ class MainActivity : AppCompatActivity() {
         initViewModelAndBinding()
         initPermissions()
         initView()
-        startNotificationListener()
+        startService()
     }
 
-    private fun startNotificationListener(){
+    private fun startService(){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2
             && isNotificationServiceEnabled()) {
             startService(Intent(this, EntryService::class.java))
@@ -58,6 +58,13 @@ class MainActivity : AppCompatActivity() {
         viewModel
         mBinding.main = viewModel
         mBinding.lifecycleOwner = this
+
+
+
+        mBinding.btnTest.setOnClickListener {
+            viewModel.setServiceRunning(!viewModel.serviceRunning.value!!)
+        }
+
     }
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP_MR1)

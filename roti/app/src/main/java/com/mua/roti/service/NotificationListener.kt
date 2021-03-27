@@ -19,7 +19,6 @@ class NotificationListener : NotificationListenerService() {
     private val basicDataStore: BasicDataStore
     override fun onListenerConnected() {
         super.onListenerConnected()
-        Toast.makeText(this,"started",Toast.LENGTH_LONG).show()
         CoroutineScope(Dispatchers.IO).launch {
             basicDataStore.setServiceRunningToStore(true)
         }
