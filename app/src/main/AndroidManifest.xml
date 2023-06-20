@@ -30,8 +30,8 @@
         </service>
         <service
             android:name=".service.EntryService"
-            android:label="EntryService"
-            android:exported="false"/>
+            android:exported="false"
+            android:label="EntryService" />
 
     </application>
 
