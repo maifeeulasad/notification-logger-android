@@ -1,7 +1,6 @@
 package com.mua.roti
 
 
-import androidx.activity.viewModels
 import android.content.ComponentName
 import android.content.Intent
 import android.os.Build
@@ -10,6 +9,7 @@ import android.provider.Settings
 import android.provider.Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS
 import android.text.TextUtils
 import android.widget.Button
+import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -25,15 +25,14 @@ import com.mua.roti.viewmodel.viewModelFactory
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var notificationsRecyclerView : RecyclerView
-    private lateinit var scrollToTopButton : Button
-    private lateinit var mBinding : ActivityMainBinding
+    private lateinit var notificationsRecyclerView: RecyclerView
+    private lateinit var scrollToTopButton: Button
+    private lateinit var mBinding: ActivityMainBinding
     private val viewModel: MainViewModel by viewModels {
         viewModelFactory { MainViewModel(this.application) }
     }
-    private lateinit var notificationListAdapter : NotificationEntryListAdapter
-    private lateinit var layoutManager : LinearLayoutManager
-
+    private lateinit var notificationListAdapter: NotificationEntryListAdapter
+    private lateinit var layoutManager: LinearLayoutManager
 
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP_MR1)
@@ -46,14 +45,15 @@ class MainActivity : AppCompatActivity() {
         startService()
     }
 
-    private fun startService(){
+    private fun startService() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2
-            && isNotificationServiceEnabled()) {
+            && isNotificationServiceEnabled()
+        ) {
             startService(Intent(this, EntryService::class.java))
         }
     }
 
-    private fun initViewModelAndBinding(){
+    private fun initViewModelAndBinding() {
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         viewModel
         mBinding.main = viewModel
@@ -68,13 +68,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP_MR1)
-    private fun initPermissions(){
+    private fun initPermissions() {
         if (!isNotificationServiceEnabled()) {
             startActivity(Intent(ACTION_NOTIFICATION_LISTENER_SETTINGS))
         }
     }
 
-    private fun initView(){
+    private fun initView() {
         notificationsRecyclerView = mBinding.rvNotifications
         scrollToTopButton = mBinding.btnScrollToTop
 
@@ -82,14 +82,14 @@ class MainActivity : AppCompatActivity() {
         initRvData()
     }
 
-    private fun initScrollToTop(){
+    private fun initScrollToTop() {
         scrollToTopButton.setOnClickListener {
-            layoutManager.scrollToPositionWithOffset(viewModel.notificationEntries.value!!.size,0)
+            layoutManager.scrollToPositionWithOffset(viewModel.notificationEntries.value!!.size, 0)
             viewModel._toTop.value = false
         }
     }
 
-    private fun initRvData(){
+    private fun initRvData() {
         notificationListAdapter = NotificationEntryListAdapter()
         notificationsRecyclerView.adapter = notificationListAdapter
 
@@ -106,8 +106,10 @@ class MainActivity : AppCompatActivity() {
 
     private fun isNotificationServiceEnabled(): Boolean {
         val pkgName = packageName
-        val flat: String = Settings.Secure.getString(contentResolver,
-                "enabled_notification_listeners")
+        val flat: String = Settings.Secure.getString(
+            contentResolver,
+            "enabled_notification_listeners"
+        )
         if (!TextUtils.isEmpty(flat)) {
             val names = flat.split(":").toTypedArray()
             for (name in names) {

@@ -9,13 +9,8 @@ import android.content.Intent
 import android.os.Build
 import android.os.IBinder
 import android.util.Log
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.Observer
-import androidx.lifecycle.asLiveData
-import androidx.lifecycle.observe
 import com.mua.roti.R
 import com.mua.roti.data.datastore.BasicDataStore
 import kotlinx.coroutines.CoroutineScope
@@ -24,7 +19,7 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 class EntryService : Service() {
-    private val basicDataStore: BasicDataStore
+    private val basicDataStore: BasicDataStore = BasicDataStore(this)
 
     override fun onBind(intent: Intent): IBinder? {
         return null
@@ -37,9 +32,9 @@ class EntryService : Service() {
     }
 
     private fun monitorNotificationService() {
-        Log.d("d--mua-entry-service","entry")
+        Log.d("d--mua-entry-service", "entry")
         CoroutineScope(Dispatchers.IO).launch {
-            Log.d("d--mua-entry-service","entry scope")
+            Log.d("d--mua-entry-service", "entry scope")
             /*
             basicDataStore.serviceRunning.asLiveData().observe(this, Observer {
                 Log.d("d--mua-entry-service","$it current status - live data")
@@ -53,9 +48,9 @@ class EntryService : Service() {
 
              */
             basicDataStore.serviceRunning.onEach {
-                val x=basicDataStore.serviceRunning.collect()
-                Log.d("d--mua-entry-service","$it current status - on each")
-                Log.d("d--mua-entry-service","$x current status - on each")
+                val x = basicDataStore.serviceRunning.collect()
+                Log.d("d--mua-entry-service", "$it current status - on each")
+                Log.d("d--mua-entry-service", "$x current status - on each")
             }
             /*
             basicDataStore.serviceRunning.map {
@@ -107,10 +102,6 @@ class EntryService : Service() {
         channel.lockscreenVisibility = Notification.VISIBILITY_PUBLIC
         notificationManager.createNotificationChannel(channel)
         return channelId
-    }
-
-    init {
-        basicDataStore = BasicDataStore(this)
     }
 
 }

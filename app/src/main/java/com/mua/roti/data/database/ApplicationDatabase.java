@@ -17,9 +17,9 @@ public abstract class ApplicationDatabase extends RoomDatabase {
     public abstract NotificationEntryDao notificationEntryDao();
 
     public static ApplicationDatabase getInstance(Context context) {
-        if(INSTANCE == null) {
-            synchronized(ApplicationDatabase.class) {
-                if(INSTANCE == null) {
+        if (INSTANCE == null) {
+            synchronized (ApplicationDatabase.class) {
+                if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                             ApplicationDatabase.class, "roti.db").build();
                 }

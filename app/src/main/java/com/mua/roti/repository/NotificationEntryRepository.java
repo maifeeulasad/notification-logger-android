@@ -12,8 +12,8 @@ import com.mua.roti.model.NotificationEntry;
 import java.util.List;
 
 public class NotificationEntryRepository {
-    private NotificationEntryDao notificationEntryDao;
-    private LiveData<List<NotificationEntry>> notificationEntries;
+    private final NotificationEntryDao notificationEntryDao;
+    private final LiveData<List<NotificationEntry>> notificationEntries;
 
     public NotificationEntryRepository(Application application) {
         ApplicationDatabase db = ApplicationDatabase.getInstance(application);
@@ -31,7 +31,7 @@ public class NotificationEntryRepository {
 
     private static class InsertAsyncTask extends AsyncTask<NotificationEntry, Void, Void> {
 
-        private NotificationEntryDao notificationEntryDao;
+        private final NotificationEntryDao notificationEntryDao;
 
         InsertAsyncTask(NotificationEntryDao notificationEntryDao) {
             this.notificationEntryDao = notificationEntryDao;

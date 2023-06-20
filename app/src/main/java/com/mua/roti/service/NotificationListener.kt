@@ -3,7 +3,6 @@ package com.mua.roti.service
 import android.os.Build
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import com.mua.roti.data.datastore.BasicDataStore
@@ -38,10 +37,7 @@ class NotificationListener : NotificationListenerService() {
         val title =
             bundle.getString(NotificationCompat.EXTRA_TITLE)
         val text = bundle.getString(NotificationCompat.EXTRA_TEXT)
-        var key: String? = ""
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT_WATCH) {
-            key = sbn.key
-        }
+        val key = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT_WATCH) sbn.key else "----"
         val notificationEntry = NotificationEntryBuilder()
             .setKey(key)
             .setTitle(title)
