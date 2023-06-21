@@ -25,6 +25,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     val serviceRunning = basicDataStore.serviceRunning.asLiveData()
     val serviceRunningText = MediatorLiveData("")
+    val searchKeyword = MutableLiveData("")
 
     fun setServiceRunning(serviceRunning: Boolean) {
         viewModelScope.launch(IO) {

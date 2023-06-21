@@ -20,7 +20,7 @@ import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.PeriodicWorkRequest
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
-import com.mua.roti.adapter.NotificationEntryListAdapter
+import com.mua.roti.adapter.list.NotificationEntryListAdapter
 import com.mua.roti.databinding.ActivityMainBinding
 import com.mua.roti.service.EntryService
 import com.mua.roti.viewmodel.MainViewModel
@@ -61,11 +61,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun startWorker() {
-        val WorkRequest: PeriodicWorkRequest =
+        val workRequest: PeriodicWorkRequest =
             PeriodicWorkRequestBuilder<ServiceBootWorker>(15, TimeUnit.MINUTES).build()
         WorkManager.getInstance(applicationContext).enqueueUniquePeriodicWork(
             "notification-listener--service-runner",
-            ExistingPeriodicWorkPolicy.KEEP, WorkRequest
+            ExistingPeriodicWorkPolicy.KEEP, workRequest
         )
     }
 
@@ -106,7 +106,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initRvData() {
-        notificationListAdapter = NotificationEntryListAdapter()
+        notificationListAdapter =
+            NotificationEntryListAdapter()
         notificationsRecyclerView.adapter = notificationListAdapter
 
         layoutManager = LinearLayoutManager(this)
@@ -118,6 +119,10 @@ class MainActivity : AppCompatActivity() {
             notificationListAdapter.setNotificationEntryList(it)
             viewModel._toTop.value = true
         })
+
+        viewModel.searchKeyword.observeForever {
+            notificationListAdapter.search(it)
+        }
     }
 
     private fun isNotificationServiceEnabled(): Boolean {
