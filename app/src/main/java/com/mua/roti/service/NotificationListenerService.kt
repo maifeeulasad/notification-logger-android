@@ -13,7 +13,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
-class NotificationListener : NotificationListenerService() {
+class NotificationListenerService : NotificationListenerService() {
     private val notificationEntryRepository: NotificationEntryRepository
     private val basicDataStore: BasicDataStore
     override fun onListenerConnected() {
