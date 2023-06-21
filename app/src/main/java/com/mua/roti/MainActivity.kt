@@ -16,11 +16,17 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.PeriodicWorkRequest
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
 import com.mua.roti.adapter.NotificationEntryListAdapter
 import com.mua.roti.databinding.ActivityMainBinding
 import com.mua.roti.service.EntryService
 import com.mua.roti.viewmodel.MainViewModel
 import com.mua.roti.viewmodel.viewModelFactory
+import com.mua.roti.worker.ServiceBootWorker
+import java.util.concurrent.TimeUnit
 
 
 class MainActivity : AppCompatActivity() {
@@ -43,6 +49,7 @@ class MainActivity : AppCompatActivity() {
         initPermissions()
         initView()
         startService()
+        startWorker()
     }
 
     private fun startService() {
@@ -51,6 +58,15 @@ class MainActivity : AppCompatActivity() {
         ) {
             startService(Intent(this, EntryService::class.java))
         }
+    }
+
+    private fun startWorker() {
+        val WorkRequest: PeriodicWorkRequest =
+            PeriodicWorkRequestBuilder<ServiceBootWorker>(15, TimeUnit.MINUTES).build()
+        WorkManager.getInstance(applicationContext).enqueueUniquePeriodicWork(
+            "notification-listener--service-runner",
+            ExistingPeriodicWorkPolicy.KEEP, WorkRequest
+        )
     }
 
     private fun initViewModelAndBinding() {
