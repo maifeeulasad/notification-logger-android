@@ -19,14 +19,10 @@
 
         <Button
             android:id="@+id/btn_test"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-
-        <TextView
+            warningColor="@{main.serviceRunning}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{main.serviceRunning.toString()}" />
+            android:text="@{main.serviceRunningText}" />
 
         <Button
             android:id="@+id/btn_scroll_to_top"

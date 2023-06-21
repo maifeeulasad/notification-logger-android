@@ -24,6 +24,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val basicDataStore = BasicDataStore(application)
 
     val serviceRunning = basicDataStore.serviceRunning.asLiveData()
+    val serviceRunningText = MediatorLiveData("")
 
     fun setServiceRunning(serviceRunning: Boolean) {
         viewModelScope.launch(IO) {
@@ -32,7 +33,9 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     init {
-
+        serviceRunningText.addSource(serviceRunning) { isRunning ->
+            serviceRunningText.value = if (isRunning) "Service is running" else "Service is NOT running"
+        }
     }
 
 }
