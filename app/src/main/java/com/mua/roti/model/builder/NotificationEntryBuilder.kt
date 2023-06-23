@@ -1,32 +1,26 @@
-package com.mua.roti.model.builder;
+package com.mua.roti.model.builder
 
-import com.mua.roti.model.NotificationEntry;
+import com.mua.roti.model.NotificationEntry
 
-public class NotificationEntryBuilder {
+class NotificationEntryBuilder {
+    var notificationEntry: NotificationEntry = NotificationEntry()
 
-    NotificationEntry notificationEntry;
-
-    public NotificationEntryBuilder() {
-        notificationEntry = new NotificationEntry();
+    fun setKey(key: String?): NotificationEntryBuilder {
+        notificationEntry.key = key
+        return this
     }
 
-    public NotificationEntryBuilder setKey(String key) {
-        notificationEntry.setKey(key);
-        return this;
+    fun setTitle(title: String?): NotificationEntryBuilder {
+        notificationEntry.title = title
+        return this
     }
 
-    public NotificationEntryBuilder setTitle(String title) {
-        notificationEntry.setTitle(title);
-        return this;
+    fun setText(text: String?): NotificationEntryBuilder {
+        notificationEntry.text = text
+        return this
     }
 
-    public NotificationEntryBuilder setText(String text) {
-        notificationEntry.setText(text);
-        return this;
+    fun build(): NotificationEntry {
+        return notificationEntry
     }
-
-    public NotificationEntry build() {
-        return notificationEntry;
-    }
-
 }

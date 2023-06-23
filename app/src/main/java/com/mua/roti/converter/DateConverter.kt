@@ -1,19 +1,18 @@
-package com.mua.roti.converter;
+package com.mua.roti.converter
 
+import androidx.room.TypeConverter
+import java.sql.Date
 
-import androidx.room.TypeConverter;
-
-import java.sql.Date;
-
-public class DateConverter {
-
+object DateConverter {
+    @JvmStatic
     @TypeConverter
-    public static Date toDate(Long dateLong) {
-        return dateLong == null ? null : new Date(dateLong);
+    fun toDate(dateLong: Long?): Date? {
+        return if (dateLong == null) null else Date(dateLong)
     }
 
+    @JvmStatic
     @TypeConverter
-    public static Long fromDate(Date date) {
-        return date == null ? null : date.getTime();
+    fun fromDate(date: Date?): Long? {
+        return date?.time
     }
 }
