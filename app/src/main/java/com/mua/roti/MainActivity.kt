@@ -120,9 +120,9 @@ class MainActivity : AppCompatActivity() {
             viewModel._toTop.value = true
         })
 
-        viewModel.searchKeyword.observeForever {
+        viewModel.searchKeyword.observe(mBinding.lifecycleOwner!!, Observer {
             notificationListAdapter.search(it)
-        }
+        })
     }
 
     private fun isNotificationServiceEnabled(): Boolean {
