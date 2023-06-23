@@ -74,12 +74,9 @@ class MainActivity : AppCompatActivity() {
         mBinding.main = viewModel
         mBinding.lifecycleOwner = this
 
-
-
         mBinding.btnTest.setOnClickListener {
             viewModel.setServiceRunning(!viewModel.serviceRunning.value!!)
         }
-
     }
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP_MR1)
