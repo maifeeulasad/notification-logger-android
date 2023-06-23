@@ -15,6 +15,10 @@ class NotificationEntryListAdapter : RecyclerView.Adapter<NotificationEntryListV
     private var filteredNotificationEntryList: MutableList<NotificationEntry> = ArrayList()
     private var keyword = ""
 
+    fun getFilterSizeAndTotalSize(): Pair<Int, Int> {
+        return Pair(filteredNotificationEntryList.size, notificationEntryList.size)
+    }
+
     fun search(searchKeyword: String = keyword) {
         filteredNotificationEntryList = ArrayList()
         this.keyword = searchKeyword.trim()

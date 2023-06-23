@@ -27,6 +27,10 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     val serviceRunningText = MediatorLiveData("")
     val searchKeyword = MutableLiveData("")
 
+    val filterSizeAndTotalSize = MutableLiveData(Pair(0, 0))
+    val filterText = MediatorLiveData("")
+    val filterTextVisibility = MediatorLiveData(false)
+
     fun setServiceRunning(serviceRunning: Boolean) {
         viewModelScope.launch(IO) {
             basicDataStore.setServiceRunningToStore(serviceRunning)
@@ -35,7 +39,14 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     init {
         serviceRunningText.addSource(serviceRunning) { isRunning ->
-            serviceRunningText.value = if (isRunning) "Service is running" else "Service is NOT running"
+            serviceRunningText.value =
+                if (isRunning) "Service is running" else "Service is NOT running"
+        }
+        filterText.addSource(filterSizeAndTotalSize) {
+            filterText.value = "Showing " + it.first + " of " + it.second
+        }
+        filterTextVisibility.addSource(filterSizeAndTotalSize) {
+            filterTextVisibility.value = it.first != it.second
         }
     }
 

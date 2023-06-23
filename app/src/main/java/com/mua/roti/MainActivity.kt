@@ -13,7 +13,6 @@ import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.work.ExistingPeriodicWorkPolicy
@@ -115,14 +114,16 @@ class MainActivity : AppCompatActivity() {
         layoutManager.stackFromEnd = true
         notificationsRecyclerView.layoutManager = layoutManager
 
-        viewModel.notificationEntries.observe(mBinding.lifecycleOwner!!, Observer {
+        viewModel.notificationEntries.observe(mBinding.lifecycleOwner!!) {
             notificationListAdapter.setNotificationEntryList(it)
             viewModel._toTop.value = true
-        })
+            viewModel.filterSizeAndTotalSize.postValue(notificationListAdapter.getFilterSizeAndTotalSize())
+        }
 
-        viewModel.searchKeyword.observe(mBinding.lifecycleOwner!!, Observer {
+        viewModel.searchKeyword.observe(mBinding.lifecycleOwner!!) {
             notificationListAdapter.search(it)
-        })
+            viewModel.filterSizeAndTotalSize.postValue(notificationListAdapter.getFilterSizeAndTotalSize())
+        }
     }
 
     private fun isNotificationServiceEnabled(): Boolean {
