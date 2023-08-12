@@ -16,13 +16,27 @@ import java.util.List;
 import dagger.Lazy;
 
 public class NotificationEntryRepository {
+    private static NotificationEntryRepository instance;
+
     private final NotificationEntryDao notificationEntryDao;
     private final LiveData<List<NotificationEntry>> notificationEntries;
 
-    public NotificationEntryRepository(Application application) {
+    private NotificationEntryRepository(Application application) {
         Lazy<ApplicationDatabase> databaseLazy = lazy(() -> ApplicationDatabase.getInstance(application));
         notificationEntryDao = databaseLazy.get().notificationEntryDao();
         notificationEntries = notificationEntryDao.getAll();
+    }
+
+    public static synchronized NotificationEntryRepository getInstance(Application application) {
+        if (application != null) {
+            if (instance == null) {
+                instance = new NotificationEntryRepository(application);
+            }
+            return instance;
+        }
+        // right now this is based out of assumption that this `instance` will be available
+        // and this `application` param will have `null`
+        return instance;
     }
 
     public LiveData<List<NotificationEntry>> getNotificationEntries() {

@@ -9,11 +9,8 @@ import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
-    private val notificationEntryRepository
-            : NotificationEntryRepository = NotificationEntryRepository(application)
-    val notificationEntries
-            : LiveData<MutableList<NotificationEntry>> =
-        notificationEntryRepository.notificationEntries
+    private val notificationEntryRepository: NotificationEntryRepository = NotificationEntryRepository.getInstance(application)
+    val notificationEntries: LiveData<MutableList<NotificationEntry>> = notificationEntryRepository.notificationEntries
 
     private val basicDataStore = BasicDataStore(application)
 

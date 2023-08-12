@@ -14,8 +14,7 @@ import kotlinx.coroutines.launch
 
 @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
 class NotificationListenerService : NotificationListenerService() {
-    private val notificationEntryRepository: NotificationEntryRepository =
-        NotificationEntryRepository(application)
+    private val notificationEntryRepository: NotificationEntryRepository = NotificationEntryRepository.getInstance(application)
     private val basicDataStore: BasicDataStore = BasicDataStore(this)
     override fun onListenerConnected() {
         super.onListenerConnected()
