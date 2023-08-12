@@ -5,6 +5,8 @@ import android.content.ComponentName
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.provider.Settings
 import android.provider.Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS
 import android.text.TextUtils
@@ -117,9 +119,15 @@ class MainActivity : AppCompatActivity() {
             viewModel.filterSizeAndTotalSize.postValue(notificationListAdapter.getFilterSizeAndTotalSize())
         }
 
-        viewModel.searchKeyword.observe(mBinding.lifecycleOwner!!) {
-            notificationListAdapter.search(it)
+        val searchDebounceHandler = Handler(Looper.getMainLooper())
+        val searchDebounceRunnable = Runnable {
+            viewModel.searchKeyword.value?.let { notificationListAdapter.search(it) }
             viewModel.filterSizeAndTotalSize.postValue(notificationListAdapter.getFilterSizeAndTotalSize())
+        }
+
+        viewModel.searchKeyword.observe(mBinding.lifecycleOwner!!) {
+            searchDebounceHandler.removeCallbacks(searchDebounceRunnable)
+            searchDebounceHandler.postDelayed(searchDebounceRunnable, 300)
         }
     }
 
