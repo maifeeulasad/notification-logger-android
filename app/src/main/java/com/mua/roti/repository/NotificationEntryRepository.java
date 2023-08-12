@@ -1,5 +1,7 @@
 package com.mua.roti.repository;
 
+import static dagger.internal.DoubleCheck.lazy;
+
 import android.app.Application;
 import android.os.AsyncTask;
 
@@ -11,13 +13,15 @@ import com.mua.roti.model.NotificationEntry;
 
 import java.util.List;
 
+import dagger.Lazy;
+
 public class NotificationEntryRepository {
     private final NotificationEntryDao notificationEntryDao;
     private final LiveData<List<NotificationEntry>> notificationEntries;
 
     public NotificationEntryRepository(Application application) {
-        ApplicationDatabase db = ApplicationDatabase.getInstance(application);
-        notificationEntryDao = db.notificationEntryDao();
+        Lazy<ApplicationDatabase> databaseLazy = lazy(() -> ApplicationDatabase.getInstance(application));
+        notificationEntryDao = databaseLazy.get().notificationEntryDao();
         notificationEntries = notificationEntryDao.getAll();
     }
 
