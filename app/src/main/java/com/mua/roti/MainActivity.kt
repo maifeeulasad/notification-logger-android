@@ -97,7 +97,7 @@ class MainActivity : AppCompatActivity() {
     private fun initScrollToTop() {
         scrollToTopButton.setOnClickListener {
             layoutManager.scrollToPositionWithOffset(viewModel.notificationEntries.value!!.size, 0)
-            viewModel._toTop.value = false
+            viewModel._toTopVisibility.value = false
         }
     }
 
@@ -113,7 +113,7 @@ class MainActivity : AppCompatActivity() {
 
         viewModel.notificationEntries.observe(mBinding.lifecycleOwner!!) {
             notificationListAdapter.setNotificationEntryList(it)
-            viewModel._toTop.value = true
+            viewModel._toTopVisibility.value = true
             viewModel.filterSizeAndTotalSize.postValue(notificationListAdapter.getFilterSizeAndTotalSize())
         }
 
