@@ -35,8 +35,7 @@ class NotificationListenerService : NotificationListenerService() {
     override fun onNotificationPosted(sbn: StatusBarNotification) {
         val notification = sbn.notification
         val bundle = notification.extras
-        val title =
-            bundle.getString(NotificationCompat.EXTRA_TITLE)
+        val title = bundle.getString(NotificationCompat.EXTRA_TITLE)
         val text = bundle.getString(NotificationCompat.EXTRA_TEXT)
         val key = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT_WATCH) sbn.key else "----"
         val notificationEntry = NotificationEntryBuilder()

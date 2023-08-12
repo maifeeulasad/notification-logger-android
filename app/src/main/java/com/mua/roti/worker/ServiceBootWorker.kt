@@ -17,8 +17,7 @@ class ServiceBootWorker(context: Context, params: WorkerParameters) :
         return try {
             Log.d("d--mua-worker", "trying to start")
             try {
-                val serviceIntent =
-                    Intent(applicationContext, NotificationListenerService::class.java)
+                val serviceIntent = Intent(applicationContext, NotificationListenerService::class.java)
                 applicationContext.startService(serviceIntent)
             } catch (ignored: Exception) { }
             Log.d("d--mua-worker", "trying to success")

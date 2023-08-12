@@ -68,7 +68,7 @@ class MainActivity : AppCompatActivity() {
             PeriodicWorkRequestBuilder<ServiceBootWorker>(15, TimeUnit.MINUTES).build()
         WorkManager.getInstance(applicationContext).enqueueUniquePeriodicWork(
             "notification-listener--service-runner",
-            ExistingPeriodicWorkPolicy.KEEP, workRequest
+            ExistingPeriodicWorkPolicy.UPDATE,workRequest
         )
     }
 
