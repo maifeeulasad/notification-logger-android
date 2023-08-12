@@ -1,6 +1,5 @@
 package com.mua.roti
 
-
 import android.content.ComponentName
 import android.content.Intent
 import android.os.Build
@@ -17,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.AdapterDataObserver
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.PeriodicWorkRequest
 import androidx.work.PeriodicWorkRequestBuilder
@@ -40,12 +40,14 @@ class MainActivity : AppCompatActivity() {
     }
     private lateinit var notificationListAdapter: NotificationEntryListAdapter
     private lateinit var layoutManager: LinearLayoutManager
-
+    private val searchDebounceHandler = Handler(Looper.getMainLooper())
+    private val searchDebounceRunnable = Runnable {
+        viewModel.searchKeyword.value?.let { notificationListAdapter.search(it) }
+    }
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP_MR1)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         initViewModelAndBinding()
         initPermissions()
         initView()
@@ -104,8 +106,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initRvData() {
-        notificationListAdapter =
-            NotificationEntryListAdapter()
+        notificationListAdapter = NotificationEntryListAdapter()
         notificationsRecyclerView.adapter = notificationListAdapter
 
         layoutManager = LinearLayoutManager(this)
@@ -116,19 +117,18 @@ class MainActivity : AppCompatActivity() {
         viewModel.notificationEntries.observe(mBinding.lifecycleOwner!!) {
             notificationListAdapter.setNotificationEntryList(it)
             viewModel._toTopVisibility.value = true
-            viewModel.filterSizeAndTotalSize.postValue(notificationListAdapter.getFilterSizeAndTotalSize())
-        }
-
-        val searchDebounceHandler = Handler(Looper.getMainLooper())
-        val searchDebounceRunnable = Runnable {
-            viewModel.searchKeyword.value?.let { notificationListAdapter.search(it) }
-            viewModel.filterSizeAndTotalSize.postValue(notificationListAdapter.getFilterSizeAndTotalSize())
         }
 
         viewModel.searchKeyword.observe(mBinding.lifecycleOwner!!) {
             searchDebounceHandler.removeCallbacks(searchDebounceRunnable)
             searchDebounceHandler.postDelayed(searchDebounceRunnable, 300)
         }
+
+        notificationListAdapter.registerAdapterDataObserver(object : AdapterDataObserver() {
+            override fun onChanged() {
+                viewModel.filterSizeAndTotalSize.postValue(notificationListAdapter.getFilterSizeAndTotalSize())
+            }
+        })
     }
 
     private fun isNotificationServiceEnabled(): Boolean {
@@ -141,14 +141,11 @@ class MainActivity : AppCompatActivity() {
             val names = flat.split(":").toTypedArray()
             for (name in names) {
                 val cn = ComponentName.unflattenFromString(name)
-                if (cn != null) {
-                    if (TextUtils.equals(pkgName, cn.packageName)) {
-                        return true
-                    }
+                if (cn != null && TextUtils.equals(pkgName, cn.packageName)) {
+                    return true
                 }
             }
         }
         return false
     }
-
 }
