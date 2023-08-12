@@ -6,30 +6,23 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.mua.roti.R
-import com.mua.roti.adapter.list.NotificationEntryListAdapter.NotificationEntryListViewHolder
 import com.mua.roti.model.NotificationEntry
 import com.mua.roti.util.ui.DisplayUtil
 
-class NotificationEntryListAdapter : RecyclerView.Adapter<NotificationEntryListViewHolder>() {
-    private var notificationEntryList: MutableList<NotificationEntry> = ArrayList()
-    private var filteredNotificationEntryList: MutableList<NotificationEntry> = ArrayList()
+class NotificationEntryListAdapter :
+    RecyclerView.Adapter<NotificationEntryListAdapter.NotificationEntryListViewHolder>() {
+
+    private var notificationEntryList: List<NotificationEntry> = emptyList()
+    private var filteredNotificationEntryList: List<NotificationEntry> = emptyList()
     private var keyword = ""
 
-    fun getFilterSizeAndTotalSize(): Pair<Int, Int> {
-        return Pair(filteredNotificationEntryList.size, notificationEntryList.size)
-    }
+    fun getFilterSizeAndTotalSize(): Pair<Int, Int> = filteredNotificationEntryList.size to notificationEntryList.size
 
     fun search(searchKeyword: String = keyword) {
-        filteredNotificationEntryList = ArrayList()
-        this.keyword = searchKeyword.trim()
-        for (entry in notificationEntryList) {
-            if (entry.key != null && entry.key.contains(searchKeyword)) {
-                filteredNotificationEntryList.add(entry)
-            } else if (entry.title != null && entry.title.contains(searchKeyword)) {
-                filteredNotificationEntryList.add(entry)
-            } else if (entry.text != null && entry.text.contains(searchKeyword)) {
-                filteredNotificationEntryList.add(entry)
-            }
+        filteredNotificationEntryList = notificationEntryList.filter { entry ->
+            entry.key?.contains(searchKeyword, ignoreCase = true) == true ||
+                    entry.title?.contains(searchKeyword, ignoreCase = true) == true ||
+                    entry.text?.contains(searchKeyword, ignoreCase = true) == true
         }
         notifyDataSetChanged()
     }
@@ -46,37 +39,31 @@ class NotificationEntryListAdapter : RecyclerView.Adapter<NotificationEntryListV
 
     override fun onBindViewHolder(holder: NotificationEntryListViewHolder, position: Int) {
         val entry = filteredNotificationEntryList[position]
-        holder.key.text = entry.key
-        holder.title.text = entry.title
-        holder.text.text = entry.text
-        holder.timeStamp.text = entry.timeStamp.toString()
-
-        DisplayUtil.setHighLightedText(holder.key, keyword)
-        DisplayUtil.setHighLightedText(holder.title, keyword)
-        DisplayUtil.setHighLightedText(holder.text, keyword)
+        holder.bind(entry, keyword)
     }
 
-    override fun getItemCount(): Int {
-        return filteredNotificationEntryList.size
-    }
+    override fun getItemCount(): Int = filteredNotificationEntryList.size
 
-    fun setNotificationEntryList(notificationEntryList: MutableList<NotificationEntry>) {
+    fun setNotificationEntryList(notificationEntryList: List<NotificationEntry>) {
         this.notificationEntryList = notificationEntryList
         search()
     }
 
-    inner class NotificationEntryListViewHolder internal constructor(view: View) :
-        RecyclerView.ViewHolder(view) {
-        val key: TextView
-        val title: TextView
-        val text: TextView
-        val timeStamp: TextView
+    inner class NotificationEntryListViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        private val key: TextView = view.findViewById(R.id.tv_item_notification_entry_key)
+        private val title: TextView = view.findViewById(R.id.tv_item_notification_entry_title)
+        private val text: TextView = view.findViewById(R.id.tv_item_notification_entry_text)
+        private val timeStamp: TextView = view.findViewById(R.id.tv_item_notification_entry_time_stamp)
 
-        init {
-            key = view.findViewById(R.id.tv_item_notification_entry_key)
-            title = view.findViewById(R.id.tv_item_notification_entry_title)
-            text = view.findViewById(R.id.tv_item_notification_entry_text)
-            timeStamp = view.findViewById(R.id.tv_item_notification_entry_time_stamp)
+        fun bind(entry: NotificationEntry, keyword: String) {
+            key.text = entry.key
+            title.text = entry.title
+            text.text = entry.text
+            timeStamp.text = entry.timeStamp.toString()
+
+            DisplayUtil.setHighLightedText(key, keyword)
+            DisplayUtil.setHighLightedText(title, keyword)
+            DisplayUtil.setHighLightedText(text, keyword)
         }
     }
 }
