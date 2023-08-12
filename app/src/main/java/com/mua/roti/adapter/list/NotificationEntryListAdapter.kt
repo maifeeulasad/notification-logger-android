@@ -23,13 +23,11 @@ class NotificationEntryListAdapter : RecyclerView.Adapter<NotificationEntryListV
         filteredNotificationEntryList = ArrayList()
         this.keyword = searchKeyword.trim()
         for (entry in notificationEntryList) {
-            if (entry.key != null && entry.title != null && entry.text != null
-                && (
-                        entry.key!!.contains(searchKeyword)
-                                || entry.title!!.contains(searchKeyword)
-                                || entry.text!!.contains(searchKeyword)
-                        )
-            ) {
+            if (entry.key != null && entry.key.contains(searchKeyword)) {
+                filteredNotificationEntryList.add(entry)
+            } else if (entry.title != null && entry.title.contains(searchKeyword)) {
+                filteredNotificationEntryList.add(entry)
+            } else if (entry.text != null && entry.text.contains(searchKeyword)) {
                 filteredNotificationEntryList.add(entry)
             }
         }
