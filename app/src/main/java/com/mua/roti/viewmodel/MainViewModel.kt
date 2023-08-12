@@ -15,10 +15,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             : LiveData<MutableList<NotificationEntry>> =
         notificationEntryRepository.notificationEntries
 
-    val _toTopVisibility: MutableLiveData<Boolean> = MutableLiveData(false)
-    val toTopVisibility: LiveData<Boolean>
-        get() = _toTopVisibility
-
     private val basicDataStore = BasicDataStore(application)
 
     val serviceRunning = basicDataStore.serviceRunning.asLiveData()

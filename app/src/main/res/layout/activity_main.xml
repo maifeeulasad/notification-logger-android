@@ -22,13 +22,6 @@
             android:layout_height="wrap_content"
             android:text="@{main.serviceRunningText}" />
 
-        <Button
-            android:id="@+id/btn_scroll_to_top"
-            visibility="@{main.toTopVisibility}"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Scroll to top" />
-
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

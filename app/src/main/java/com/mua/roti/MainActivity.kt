@@ -33,7 +33,6 @@ import java.util.concurrent.TimeUnit
 class MainActivity : AppCompatActivity() {
 
     private lateinit var notificationsRecyclerView: RecyclerView
-    private lateinit var scrollToTopButton: Button
     private lateinit var mBinding: ActivityMainBinding
     private val viewModel: MainViewModel by viewModels {
         viewModelFactory { MainViewModel(this.application) }
@@ -48,6 +47,7 @@ class MainActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP_MR1)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         initViewModelAndBinding()
         initPermissions()
         initView()
@@ -92,17 +92,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun initView() {
         notificationsRecyclerView = mBinding.rvNotifications
-        scrollToTopButton = mBinding.btnScrollToTop
 
-        initScrollToTop()
         initRvData()
-    }
-
-    private fun initScrollToTop() {
-        scrollToTopButton.setOnClickListener {
-            layoutManager.scrollToPositionWithOffset(viewModel.notificationEntries.value!!.size, 0)
-            viewModel._toTopVisibility.value = false
-        }
     }
 
     private fun initRvData() {
@@ -116,7 +107,6 @@ class MainActivity : AppCompatActivity() {
 
         viewModel.notificationEntries.observe(mBinding.lifecycleOwner!!) {
             notificationListAdapter.setNotificationEntryList(it)
-            viewModel._toTopVisibility.value = true
         }
 
         viewModel.searchKeyword.observe(mBinding.lifecycleOwner!!) {
