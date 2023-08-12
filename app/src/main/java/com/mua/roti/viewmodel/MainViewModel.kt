@@ -41,7 +41,8 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 if (isRunning) "Service is running" else "Service is NOT running"
         }
         filterText.addSource(filterSizeAndTotalSize) {
-            filterText.value = "Showing " + it.first + " of " + it.second
+            filterText.value =
+                "Matched " + it.first + " record(s); out of " + it.second + " record(s);"
         }
         filterTextVisibility.addSource(filterSizeAndTotalSize) {
             filterTextVisibility.value = it.first != it.second
