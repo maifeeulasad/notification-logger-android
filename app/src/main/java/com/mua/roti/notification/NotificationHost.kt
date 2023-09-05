@@ -10,7 +10,7 @@ import android.media.RingtoneManager
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import com.mua.roti.R
-import java.text.SimpleDateFormat
+import com.mua.roti.common.Util
 import java.util.*
 
 object NotificationHost {
@@ -43,7 +43,11 @@ object NotificationHost {
     }
 
     fun showDummyNotification(context: Context, intent: Intent?) {
-        val timeStamp: String = SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().time)
-        showNotification(context, "Test - Notification Logger Android", timeStamp, intent)
+        showNotification(
+            context,
+            "Test - Notification Logger Android",
+            Util.getCurrentTimeString(),
+            intent
+        )
     }
 }

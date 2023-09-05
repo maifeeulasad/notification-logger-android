@@ -5,6 +5,7 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
+import com.mua.roti.common.Util;
 import com.mua.roti.converter.DateConverter;
 
 import java.sql.Date;
@@ -27,7 +28,7 @@ public class NotificationEntry {
     private String text;
 
     @ColumnInfo(name = "timeStamp")
-    private Date timeStamp = new Date(new java.util.Date().getTime());
+    private Date timeStamp = Util.getCurrentSqlTime();
 
     public Long getNotificationEntryId() {
         return notificationEntryId;

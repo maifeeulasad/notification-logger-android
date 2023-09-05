@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.mua.roti.R
+import com.mua.roti.common.Util
 import com.mua.roti.model.NotificationEntry
 import com.mua.roti.util.ui.DisplayUtil
 
@@ -16,7 +17,8 @@ class NotificationEntryListAdapter :
     private var filteredNotificationEntryList: List<NotificationEntry> = emptyList()
     private var keyword = ""
 
-    fun getFilterSizeAndTotalSize(): Pair<Int, Int> = filteredNotificationEntryList.size to notificationEntryList.size
+    fun getFilterSizeAndTotalSize(): Pair<Int, Int> =
+        filteredNotificationEntryList.size to notificationEntryList.size
 
     fun search(searchKeyword: String = keyword) {
         filteredNotificationEntryList = notificationEntryList.filter { entry ->
@@ -59,7 +61,7 @@ class NotificationEntryListAdapter :
             key.text = entry.key
             title.text = entry.title
             text.text = entry.text
-            timeStamp.text = entry.timeStamp.toString()
+            timeStamp.text = Util.getTimeString(entry.timeStamp)
 
             DisplayUtil.setHighLightedText(key, keyword)
             DisplayUtil.setHighLightedText(title, keyword)
