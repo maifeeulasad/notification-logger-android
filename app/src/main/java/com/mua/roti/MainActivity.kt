@@ -9,7 +9,6 @@ import android.os.Looper
 import android.provider.Settings
 import android.provider.Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS
 import android.text.TextUtils
-import android.widget.Button
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -23,10 +22,12 @@ import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.mua.roti.adapter.list.NotificationEntryListAdapter
 import com.mua.roti.databinding.ActivityMainBinding
+import com.mua.roti.notification.NotificationHost
 import com.mua.roti.service.EntryService
 import com.mua.roti.viewmodel.MainViewModel
 import com.mua.roti.viewmodel.viewModelFactory
 import com.mua.roti.worker.ServiceBootWorker
+import java.util.*
 import java.util.concurrent.TimeUnit
 
 
@@ -68,7 +69,7 @@ class MainActivity : AppCompatActivity() {
             PeriodicWorkRequestBuilder<ServiceBootWorker>(15, TimeUnit.MINUTES).build()
         WorkManager.getInstance(applicationContext).enqueueUniquePeriodicWork(
             "notification-listener--service-runner",
-            ExistingPeriodicWorkPolicy.UPDATE,workRequest
+            ExistingPeriodicWorkPolicy.UPDATE, workRequest
         )
     }
 
@@ -80,6 +81,9 @@ class MainActivity : AppCompatActivity() {
 
         mBinding.btnTest.setOnClickListener {
             viewModel.setServiceRunning(!viewModel.serviceRunning.value!!)
+        }
+        mBinding.btnPing.setOnClickListener {
+            NotificationHost.showDummyNotification(this, intent)
         }
     }
 

@@ -16,6 +16,12 @@
         android:padding="20dp">
 
         <Button
+            android:id="@+id/btn_ping"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/post_a_notification" />
+
+        <Button
             android:id="@+id/btn_test"
             warningColor="@{main.serviceRunning}"
             android:layout_width="match_parent"
