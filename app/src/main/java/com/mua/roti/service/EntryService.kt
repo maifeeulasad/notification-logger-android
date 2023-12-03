@@ -8,7 +8,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.IBinder
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import com.mua.roti.R
@@ -50,48 +49,11 @@ class EntryService : Service() {
     }
 
     private fun monitorNotificationService() {
-        Log.d("d--mua-entry-service", "entry")
         CoroutineScope(Dispatchers.IO).launch {
-            Log.d("d--mua-entry-service", "entry scope")
-            /*
-            basicDataStore.serviceRunning.asLiveData().observe(this, Observer {
-                Log.d("d--mua-entry-service","$it current status - live data")
-            })
-
-             */
-            /*
-            basicDataStore.serviceRunning.collect{
-                Log.d("d--mua-entry-service","$it current status - collect")
-            }
-
-             */
             basicDataStore.serviceRunning.onEach {
-                val x = basicDataStore.serviceRunning.collect()
-                Log.d("d--mua-entry-service", "$it current status - on each")
-                Log.d("d--mua-entry-service", "$x current status - on each")
-            }
-            /*
-            basicDataStore.serviceRunning.map {
-                Log.d("d--mua-entry-service","$it current status - map")
-            }
-
-             */
-        }
-        /*
-        CoroutineScope(Dispatchers.IO).launch {
-            if (!basicDataStore.serviceRunning.first()) {
-                Toast.makeText(this@EntryService, "service not running", Toast.LENGTH_LONG).show()
-                startService(
-                    Intent(
-                        this@EntryService,
-                        NotificationListener::class.java
-                    )
-                )
-            }else{
-                Toast.makeText(this@EntryService, "choltese", Toast.LENGTH_LONG).show()
+                basicDataStore.serviceRunning.collect()
             }
         }
-         */
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
