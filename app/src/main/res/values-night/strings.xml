@@ -2,4 +2,7 @@
 <resources>
     <string name="app_name">Notification Logger Android</string>
     <string name="post_a_notification">Post a notification</string>
+    <string name="ask_for_permission">Notification permission is required, Please allow</string>
+    <string name="okay">Okay</string>
+    <string name="cancel">Cancel</string>
 </resources>
