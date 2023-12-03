@@ -18,7 +18,11 @@ jobs:
     - name: 'Updating ubuntu deps'    
       run: sudo apt update --fix-missing && sudo apt upgrade -y
     - name: 'Installing deps'    
-      run: sudo apt install -y android-tools-adb android-tools-fastboot default-jre default-jdk android-sdk
+      run: sudo apt install -y android-tools-adb android-tools-fastboot openjdk-17-jdk android-sdk
+    - name: 'Set default Java to 17'
+      run: sudo update-alternatives --set java /usr/lib/jvm/java-17-openjdk-amd64/bin/java
+    - name: 'Set default javac to 17'
+      run: sudo update-alternatives --set javac /usr/lib/jvm/java-17-openjdk-amd64/bin/javac
     - name: 'Exporting android sdk'    
       run: export ANDROID_SDK_ROOT=/usr/lib/android-sdk
     - name: 'Download and extract android-cli tools'    
