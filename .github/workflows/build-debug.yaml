@@ -23,6 +23,10 @@ jobs:
       run: sudo update-alternatives --set java /usr/lib/jvm/java-17-openjdk-amd64/bin/java
     - name: 'Set default javac to 17'
       run: sudo update-alternatives --set javac /usr/lib/jvm/java-17-openjdk-amd64/bin/javac
+    - name: 'Set JAVA_HOME to Java 17'
+      run: echo "JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64" >> $GITHUB_ENV
+    - name: 'Update PATH'
+      run: echo "PATH=$JAVA_HOME/bin:$PATH" >> $GITHUB_ENV
     - name: 'Exporting android sdk'    
       run: export ANDROID_SDK_ROOT=/usr/lib/android-sdk
     - name: 'Download and extract android-cli tools'    
