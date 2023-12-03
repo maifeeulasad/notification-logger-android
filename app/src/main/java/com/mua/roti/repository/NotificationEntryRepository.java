@@ -27,15 +27,11 @@ public class NotificationEntryRepository {
         notificationEntries = notificationEntryDao.getAll();
     }
 
-    public static synchronized NotificationEntryRepository getInstance(Application application) {
-        if (application != null) {
-            if (instance == null) {
-                instance = new NotificationEntryRepository(application);
-            }
+    public static NotificationEntryRepository getInstance(Application application) {
+        if(application==null){
             return instance;
         }
-        // right now this is based out of assumption that this `instance` will be available
-        // and this `application` param will have `null`
+        instance = new NotificationEntryRepository(application);
         return instance;
     }
 
