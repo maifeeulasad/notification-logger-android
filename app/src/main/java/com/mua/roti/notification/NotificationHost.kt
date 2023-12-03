@@ -18,11 +18,17 @@ object NotificationHost {
     private const val CHANNEL_ID = "NOTIFICATION_LOGGER_CHANNEL_ID"
     private val CHANNEL_NAME: CharSequence = "NOTIFICATION_LOGGER_CHANNEL_NAME"
 
-    fun showNotification(context: Context, title: String?, message: String?, intent: Intent?) {
+    private fun showNotification(context: Context, title: String?, message: String?, intent: Intent?) {
         val uuid = Calendar.getInstance().timeInMillis.toInt()
         val icon = BitmapFactory.decodeResource(context.resources, R.mipmap.ic_launcher)
-        val pendingIntent = PendingIntent
-            .getActivity(context, uuid, intent, PendingIntent.FLAG_ONE_SHOT)
+
+        val flag = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            PendingIntent.FLAG_ONE_SHOT or PendingIntent.FLAG_IMMUTABLE
+        } else {
+            PendingIntent.FLAG_ONE_SHOT
+        }
+
+        val pendingIntent = PendingIntent.getActivity(context, uuid, intent, flag)
         val notificationBuilder = NotificationCompat.Builder(context, CHANNEL_ID)
             .setSmallIcon(R.mipmap.ic_launcher)
             .setLargeIcon(icon)
@@ -41,6 +47,7 @@ object NotificationHost {
         }
         notificationManager.notify(uuid, notificationBuilder.build())
     }
+
 
     fun showDummyNotification(context: Context, intent: Intent?) {
         showNotification(
