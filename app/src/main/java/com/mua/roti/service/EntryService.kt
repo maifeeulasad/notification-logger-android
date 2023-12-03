@@ -36,7 +36,7 @@ class EntryService : Service() {
         val notificationManager =
             getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         val channelId =
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) getNotificationChannel(
+            if (Build.VERSION.SDK_INT >= 26) getNotificationChannel(
                 notificationManager
             ) else ""
         val notificationBuilder =
@@ -56,7 +56,7 @@ class EntryService : Service() {
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
+    @RequiresApi(26)
     private fun getNotificationChannel(notificationManager: NotificationManager): String {
         val channelId = "roti-notification"
         val channelName = resources.getString(R.string.app_name)

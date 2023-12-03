@@ -12,7 +12,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-@RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
+@RequiresApi(api = 18)
 class NotificationListenerService : NotificationListenerService() {
     private val notificationEntryRepository: NotificationEntryRepository = NotificationEntryRepository.getInstance(application)
     private val basicDataStore: BasicDataStore = BasicDataStore(this)
@@ -30,13 +30,13 @@ class NotificationListenerService : NotificationListenerService() {
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    @RequiresApi(api = 19)
     override fun onNotificationPosted(sbn: StatusBarNotification) {
         val notification = sbn.notification
         val bundle = notification.extras
         val title = bundle.getString(NotificationCompat.EXTRA_TITLE)
         val text = bundle.getString(NotificationCompat.EXTRA_TEXT)
-        val key = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT_WATCH) sbn.key else "----"
+        val key = if (Build.VERSION.SDK_INT >= 20) sbn.key else "----"
         val notificationEntry = NotificationEntryBuilder()
             .setKey(key)
             .setTitle(title)
@@ -46,6 +46,7 @@ class NotificationListenerService : NotificationListenerService() {
     }
 
     override fun onNotificationRemoved(sbn: StatusBarNotification) {
+
         super.onNotificationRemoved(sbn)
     }
 

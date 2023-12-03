@@ -22,7 +22,7 @@ object NotificationHost {
         val uuid = Calendar.getInstance().timeInMillis.toInt()
         val icon = BitmapFactory.decodeResource(context.resources, R.mipmap.ic_launcher)
 
-        val flag = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+        val flag = if (Build.VERSION.SDK_INT >= 31) {
             PendingIntent.FLAG_ONE_SHOT or PendingIntent.FLAG_IMMUTABLE
         } else {
             PendingIntent.FLAG_ONE_SHOT
@@ -40,7 +40,7 @@ object NotificationHost {
             .setContentIntent(pendingIntent)
         val notificationManager =
             context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        if (Build.VERSION.SDK_INT >= 26) {
             val importance = NotificationManager.IMPORTANCE_HIGH
             val mChannel = NotificationChannel(CHANNEL_ID, CHANNEL_NAME, importance)
             notificationManager.createNotificationChannel(mChannel)

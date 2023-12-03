@@ -12,7 +12,7 @@ import com.mua.roti.service.NotificationListenerService
 
 class ServiceBootWorker(context: Context, params: WorkerParameters) :
     Worker(context, params) {
-    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
+    @RequiresApi(18)
     private fun startNotificationListenerService(): Result {
         return try {
             Log.d("d--mua-worker", "trying to start")
@@ -28,7 +28,7 @@ class ServiceBootWorker(context: Context, params: WorkerParameters) :
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
+    @RequiresApi(18)
     override fun doWork(): Result {
         return startNotificationListenerService()
     }

@@ -49,7 +49,7 @@ class MainActivity : AppCompatActivity() {
         viewModel.searchKeyword.value?.let { notificationListAdapter.search(it) }
     }
 
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP_MR1)
+    @RequiresApi(22)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -61,7 +61,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun startService() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2
+        if (Build.VERSION.SDK_INT >= 18
             && isNotificationServiceEnabled()
         ) {
             startService(Intent(this, EntryService::class.java))
@@ -93,7 +93,7 @@ class MainActivity : AppCompatActivity() {
 
     private val notificationPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
-            if (!isGranted && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (!isGranted && Build.VERSION.SDK_INT >= 23) {
                 if (Build.VERSION.SDK_INT >= 33) {
                     if (shouldShowRequestPermissionRationale(android.Manifest.permission.POST_NOTIFICATIONS)) {
                         showNotificationPermissionRationale()
@@ -136,12 +136,12 @@ class MainActivity : AppCompatActivity() {
             .show()
     }
 
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP_MR1)
+    @RequiresApi(22)
     private fun initPermissions() {
         if (!isNotificationServiceEnabled()) {
             startActivity(Intent(ACTION_NOTIFICATION_LISTENER_SETTINGS))
         }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        if (Build.VERSION.SDK_INT >= 33) {
             notificationPermissionLauncher.launch(android.Manifest.permission.POST_NOTIFICATIONS)
         }
     }
