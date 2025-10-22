@@ -29,8 +29,10 @@ jobs:
       run: echo "PATH=$JAVA_HOME/bin:$PATH" >> $GITHUB_ENV
     - name: 'Set ANDROID_HOME'    
       run: echo "ANDROID_HOME=/usr/lib/android-sdk" >> $GITHUB_ENV
-    - name: 'Redeclare ANDROID_SDK_ROOT'    
-      run: echo "ANDROID_SDK_ROOT=/usr/lib/android-sdk" >> $GITHUB_ENV
+    - name: 'Clear conflicting ANDROID_SDK_ROOT'    
+      run: echo "ANDROID_SDK_ROOT=" >> $GITHUB_ENV
+    - name: 'Set ANDROID_NDK_HOME'    
+      run: echo "ANDROID_NDK_HOME=/usr/lib/android-sdk/ndk/25.2.9519653" >> $GITHUB_ENV
     - name: 'Download and extract android-cli tools'    
       run: curl https://dl.google.com/android/repository/commandlinetools-linux-9123335_latest.zip --output commandlinetools-linux-9123335_latest.zip && sudo mkdir /usr/lib/android-sdk/cmdline-tools && sudo unzip -o commandlinetools-linux-9123335_latest.zip -d /usr/lib/android-sdk/cmdline-tools
     - name: 'Listing commandlinetools.zip'
@@ -53,7 +55,7 @@ jobs:
     - name: 'sdkmanager version'    
       run: /usr/lib/android-sdk/cmdline-tools/cmdline-tools/bin/sdkmanager --version
     - name: 'install buildtool 34.0.0 and accept license'    
-      run: yes | sudo /usr/lib/android-sdk/cmdline-tools/cmdline-tools/bin/sdkmanager "build-tools;34.0.0" "platform-tools"
+      run: yes | sudo /usr/lib/android-sdk/cmdline-tools/cmdline-tools/bin/sdkmanager "build-tools;34.0.0" "platform-tools" "ndk;25.2.9519653" "cmake;3.22.1"
     - name: 'accept all licenses'    
       run: yes | /usr/lib/android-sdk/cmdline-tools/cmdline-tools/bin/sdkmanager --licenses
     - name: 'transfer ownership (as tools are installed under root, they need to excuted under root) ,'    
