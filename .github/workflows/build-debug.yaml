@@ -74,7 +74,7 @@ jobs:
     - name: 'transfer ownership (as tools are installed under root, they need to excuted under root) ,'    
       run: sudo chown -R $(whoami) $ANDROID_HOME
     - name: 'Build android project'    
-      run: ./gradlew assembleDebug
+      run: ./gradlew assembleDebug --debug --stacktrace
     - name: 'list build directory'    
       run: ls app/build/outputs/apk/debug/  
     - name: 'store .apk'
