@@ -13,12 +13,12 @@ def hasReleaseSigning = keystorePath != null && file(keystorePath).exists()
 
 android {
     namespace 'com.mua.roti'
-    compileSdk 35
+    compileSdk 36
 
     defaultConfig {
         applicationId "com.mua.roti"
         minSdk 16
-        targetSdk 35
+        targetSdk 36
         versionCode 3
         versionName "1.2"
 
